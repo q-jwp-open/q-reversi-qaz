@@ -1,0 +1,76 @@
+name: q_reversi_app
+description: Q-Reversi - Quantum Computing Reversi Game
+publish_to: 'none'
+version: 1.0.0+1
+
+environment:
+  sdk: '>=3.0.0 <4.0.0'
+
+dependencies:
+  flutter:
+    sdk: flutter
+  
+  # 状態管理
+  provider: ^6.1.1
+  
+  # データ永続化
+  sqflite: ^2.3.0
+  path: ^1.8.3
+  shared_preferences: ^2.2.2
+  
+  # CSV読み込み
+  csv: ^5.0.2
+  
+  # ユーティリティ
+  collection: ^1.18.0
+  equatable: ^2.0.5
+  
+  # 動画再生
+  video_player: ^2.8.1
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_lints: ^3.0.0
+  flutter_launcher_icons: ^0.13.1
+
+flutter:
+  uses-material-design: true
+  
+  assets:
+    - assets/
+    - assets/QuantumComputer.png
+    - assets/PC_img.png
+    - assets/QC_img.png
+    - assets/QC_and_Othello.png
+    - assets/whiteLine.png
+    - assets/whiteDotArrow.png
+    - assets/gateExample.png
+    - assets/QC_Gate.png
+    - assets/gateX.png
+    - assets/gateH.png
+    - assets/gateZ.png
+    - assets/gateY.png
+    - assets/gateSWAP.png
+    - assets/gateCNOT.png
+    - assets/CNOTgray.png
+    - assets/CNOT3.png
+    - assets/entanglement.png
+    - assets/blackCNOT_all.png
+    - assets/whiteCNOT_all.png
+    - assets/coinToss.mp4
+    - q-reversi_challange-mode.csv
+
+flutter_launcher_icons:
+  android: true
+  ios: true
+  remove_alpha_ios: true
+  web:
+    generate: true
+    image_path: "assets/icon.png"
+    background_color: "#ffffff"
+    theme_color: "#ffffff"
+  image_path: "assets/icon.png"
+  min_sdk_android: 21
+  adaptive_icon_background: "#ffffff"
+  adaptive_icon_foreground: "assets/icon.png"
