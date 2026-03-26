@@ -1,19 +1,14 @@
 import '../entities/piece_type.dart';
 import '../entities/gate_type.dart';
 import '../entities/position.dart';
-import '../entities/board.dart';
-import '../entities/player.dart';
 import '../entities/game_state.dart';
 import '../entities/entangled_pair.dart';
 import '../entities/game_mode.dart';
 import '../entities/piece.dart';
 import '../entities/forbidden_area.dart';
-import 'dart:math';
 
 /// 量子ゲートサービス
 class GateService {
-  final Random _random = Random();
-  
   /// ゲートを適用
   GameState applyGate(
     GameState gameState,
@@ -65,14 +60,9 @@ class GateService {
     for (final position in positions) {
       final piece = newBoard.getPiece(position.row, position.col);
       if (piece == null) continue;
-      
-      // 禁止領域の処理（1ビットゲートのみ）
-      // 禁止領域の駒は、行/列選択時も4マス選択時も、その駒のみスキップして次の駒に進む
-      if (isPositionForbidden(position)) {
-        continue; // 禁止領域の駒のみスキップ
-      }
-      
+
       // エンタングル状態の処理
+      // ※禁止領域より先に判定することで、「エンタングル駒で止まる」仕様を安定させる
       if (piece.isEntangled) {
         if (isRowOrColumn) {
           // 行/列選択の場合: エンタングルした駒でゲート適用範囲は止まる
@@ -81,6 +71,12 @@ class GateService {
           // 4マス選択の場合: エンタングルされた駒のみゲートが適用されない（スキップ）
           continue;
         }
+      }
+
+      // 禁止領域の処理（1ビットゲートのみ）
+      // 禁止領域の駒は、その駒のみスキップして次の駒に進む
+      if (isPositionForbidden(position)) {
+        continue;
       }
       
       final newType = _applyOneBitGateToPiece(piece.type, gate, currentPlayer.color);

@@ -34,11 +34,13 @@ double _classicalEval(GameState state, PlayerColor myColor) {
       final piece = board.getPiece(r, c);
       if (piece == null) continue;
       if (myColor == PlayerColor.white) {
-        if (piece.type == PieceType.white) mine++;
-        else if (piece.type == PieceType.black) opp++;
+        if (piece.type == PieceType.white) {
+          mine++;
+        } else if (piece.type == PieceType.black) opp++;
       } else {
-        if (piece.type == PieceType.black) mine++;
-        else if (piece.type == PieceType.white) opp++;
+        if (piece.type == PieceType.black) {
+          mine++;
+        } else if (piece.type == PieceType.white) opp++;
       }
     }
   }
@@ -59,9 +61,17 @@ double _probWinEval(GameState state, PlayerColor myColor) {
       if (piece == null) continue;
       switch (piece.type) {
         case PieceType.white:
-          if (myColor == PlayerColor.white) mine++; else opp++;
+          if (myColor == PlayerColor.white) {
+            mine++;
+          } else {
+            opp++;
+          }
         case PieceType.black:
-          if (myColor == PlayerColor.black) mine++; else opp++;
+          if (myColor == PlayerColor.black) {
+            mine++;
+          } else {
+            opp++;
+          }
         case PieceType.grayPlus:
         case PieceType.grayMinus:
           nGray++;
@@ -129,7 +139,17 @@ class AIService {
     List<GateType> availableGates,
   ) {
     final gate = availableGates[_random.nextInt(availableGates.length)];
-    final target = _selectRandomTarget(gameState, gate);
+    // 適用できない手を選ぶと CPU が手番を進められず詰まりやすいため、
+    // `_tryApply` が受理したターゲットのみから選ぶ
+    final possibleTargets = _getPossibleTargets(gameState, gate);
+    final validTargets = <List<Position>>[];
+    for (final t in possibleTargets) {
+      final s = _tryApply(gameState, gate, t);
+      if (s != null) validTargets.add(t);
+    }
+    final target = validTargets.isNotEmpty
+        ? validTargets[_random.nextInt(validTargets.length)]
+        : const <Position>[];
 
     return AIAction(
       gate: gate,
@@ -152,11 +172,8 @@ class AIService {
       final targets = _getPossibleTargets(gameState, gate);
 
       for (final target in targets) {
-        final simulatedState = _simulateGateApplication(
-          gameState,
-          gate,
-          target,
-        );
+        final simulatedState = _tryApply(gameState, gate, target);
+        if (simulatedState == null) continue;
 
         final evaluation = _evaluateBoard(
           simulatedState,
@@ -173,6 +190,9 @@ class AIService {
     }
 
     candidates.sort((a, b) => b.score.compareTo(a.score));
+    if (candidates.isEmpty) {
+      return _thinkBeginner(gameState, availableGates);
+    }
     final topCandidates = candidates.take(3).toList();
     return topCandidates[_random.nextInt(topCandidates.length)];
   }
@@ -192,11 +212,8 @@ class AIService {
       final targets = _getPossibleTargets(gameState, gate);
 
       for (final target in targets) {
-        final simulatedState = _simulateGateApplication(
-          gameState,
-          gate,
-          target,
-        );
+        final simulatedState = _tryApply(gameState, gate, target);
+        if (simulatedState == null) continue;
 
         final measurementScore = _predictMeasurementScore(
           simulatedState,
@@ -220,6 +237,9 @@ class AIService {
     }
 
     candidates.sort((a, b) => b.score.compareTo(a.score));
+    if (candidates.isEmpty) {
+      return _thinkBeginner(gameState, availableGates);
+    }
     return candidates.first;
   }
 
@@ -431,16 +451,6 @@ class AIService {
     }
 
     return targets;
-  }
-
-  /// ランダムなターゲットを選択
-  List<Position> _selectRandomTarget(
-    GameState gameState,
-    GateType gate,
-  ) {
-    final targets = _getPossibleTargets(gameState, gate);
-    if (targets.isEmpty) return [];
-    return targets[_random.nextInt(targets.length)];
   }
 
   /// ゲート適用をシミュレート

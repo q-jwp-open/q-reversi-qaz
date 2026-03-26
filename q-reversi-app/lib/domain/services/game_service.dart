@@ -20,7 +20,7 @@ class GameService {
   ) {
     final currentPlayer = gameState.getCurrentPlayer();
     if (currentPlayer == null) return gameState;
-    
+
     // クールタイムチェック（フリーランモードとチャレンジモードではスキップ）
     if (gameState.gameMode != GameMode.freeRun && 
         gameState.gameMode != GameMode.challenge && 
@@ -32,13 +32,12 @@ class GameService {
     if (gate.isOneBitGate && 
         gameState.gameMode != GameMode.freeRun && 
         gameState.gameMode != GameMode.challenge) {
-      final opponent = gameState.getOpponentPlayer();
-      if (opponent != null) {
-        final opponentForbiddenAreas = gameState.getForbiddenAreas(opponent.id);
-        for (final area in opponentForbiddenAreas) {
-          if (_isTargetForbidden(area, gate, targetPositions)) {
-            return gameState; // エラー: 禁止領域
-          }
+      // 禁止領域は「次の相手ターン」用として set されるため、
+      // 適用時点では“現在手番プレイヤーの forbiddenAreas”を参照して拒否する。
+      final currentForbiddenAreas = gameState.getForbiddenAreas(currentPlayer.id);
+      for (final area in currentForbiddenAreas) {
+        if (_isTargetForbidden(area, gate, targetPositions)) {
+          return gameState; // エラー: 禁止領域
         }
       }
     }
@@ -46,6 +45,16 @@ class GameService {
     // エンタングルメントチェック（仕様: エンタングルされた駒にはゲート操作不可）
     // ただし、1ビットゲートの場合は適用範囲が止まるか、その駒のみスキップされる
     // 2ビットゲートの場合は完全に適用不可
+    if (gate.isOneBitGate && targetPositions.length == 4) {
+      // UI仕様と揃える: 4マス選択にエンタングル駒を含む場合は手を拒否
+      for (final position in targetPositions) {
+        final piece = gameState.board.getPiece(position.row, position.col);
+        if (piece != null && piece.isEntangled) {
+          return gameState; // エラー: エンタングルを含む4マス選択
+        }
+      }
+    }
+
     if (gate.isTwoBitGate) {
       for (final position in targetPositions) {
         final piece = gameState.board.getPiece(position.row, position.col);
@@ -58,6 +67,45 @@ class GameService {
     
     // ゲートを適用
     var newState = _gateService.applyGate(gameState, gate, targetPositions);
+
+    // VSモードで、今回の2ビットゲート適用によってエンタングルが生成された場合
+    // 次の相手ターンの禁止領域として「エンタングルした2駒の行・列」を追加する
+    final entanglementForbiddenAreas = <ForbiddenArea>[];
+    if (gameState.gameMode == GameMode.vs &&
+        gate.isTwoBitGate &&
+        targetPositions.length == 2) {
+      final pos1 = targetPositions[0];
+      final pos2 = targetPositions[1];
+      final piece1 = newState.board.getPiece(pos1.row, pos1.col);
+      final piece2 = newState.board.getPiece(pos2.row, pos2.col);
+
+      final isEntangledNow =
+          (piece1 != null && piece1.isEntangled) ||
+          (piece2 != null && piece2.isEntangled);
+
+      if (isEntangledNow) {
+        final addedKeys = <String>{};
+
+        void addForbiddenRow(int row) {
+          final key = 'row:$row';
+          if (addedKeys.add(key)) {
+            entanglementForbiddenAreas.add(ForbiddenArea.row(row));
+          }
+        }
+
+        void addForbiddenColumn(int col) {
+          final key = 'col:$col';
+          if (addedKeys.add(key)) {
+            entanglementForbiddenAreas.add(ForbiddenArea.column(col));
+          }
+        }
+
+        addForbiddenRow(pos1.row);
+        addForbiddenColumn(pos1.col);
+        addForbiddenRow(pos2.row);
+        addForbiddenColumn(pos2.col);
+      }
+    }
     
     // クールタイムを更新（フリーランモードとチャレンジモードではクールタイムを設定しない）
     final updatedPlayer = (gameState.gameMode == GameMode.freeRun || gameState.gameMode == GameMode.challenge)
@@ -89,7 +137,9 @@ class GameService {
     newForbiddenAreas[currentPlayer.id] = [];
     
     // 相手の禁止領域を設定
-    newForbiddenAreas[opponentId] = [forbiddenArea];
+    newForbiddenAreas[opponentId] = entanglementForbiddenAreas.isNotEmpty
+        ? entanglementForbiddenAreas
+        : [forbiddenArea];
     
     // 2ビットゲートが適用された場合、位置を記録（次のターンのプレイヤーに設定）
     final newLastTwoBitGatePositions = Map<int, List<Position>>.from(newState.lastTwoBitGatePositions);

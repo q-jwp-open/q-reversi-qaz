@@ -32,6 +32,9 @@ class _GameScreenState extends State<GameScreen> {
   List<Position> _selectedPositions = [];
   int? _selectedRow;
   int? _selectedColumn;
+  String? _selectedRowDirection; // 'left' or 'right'
+  String? _selectedColumnDirection; // 'top' or 'bottom'
+  int _lastObservedTurnCount = -1;
   String? _entangledErrorMessage; // エンタングル駒選択時のエラーメッセージ
   
   @override
@@ -63,6 +66,31 @@ class _GameScreenState extends State<GameScreen> {
             builder: (context, provider, _) {
               final state = provider.gameState;
               final currentPlayer = state.getCurrentPlayer();
+              
+              // VSモード: CPU等が手を進めたタイミングで、ローカルな「2ビット選択UI」状態を残さない
+              // `BoardWidget` 側は「2ビット選択中は禁止領域を表示しない」ため、ターン変化で必ずクリアする
+              if (state.gameMode == GameMode.vs &&
+                  state.turnCount != _lastObservedTurnCount) {
+                final shouldClear = _selectedGate != null ||
+                    _selectedPositions.isNotEmpty ||
+                    _selectedRow != null ||
+                    _selectedColumn != null;
+                _lastObservedTurnCount = state.turnCount;
+                if (shouldClear) {
+                  WidgetsBinding.instance.addPostFrameCallback((_) {
+                    if (!mounted) return;
+                    setState(() {
+                      _selectedGate = null;
+                      _selectedPositions = [];
+                      _selectedRow = null;
+                      _selectedColumn = null;
+                      _selectedRowDirection = null;
+                      _selectedColumnDirection = null;
+                      _entangledErrorMessage = null;
+                    });
+                  });
+                }
+              }
               
               return SafeArea(
                 child: LayoutBuilder(
@@ -743,6 +771,15 @@ class _GameScreenState extends State<GameScreen> {
                     ),
                   ),
                 ),
+              // VSモード用のゲート説明ボタン
+              if (state.gameMode == GameMode.vs && !state.isGameOver) ...[
+                const SizedBox(width: 12),
+                IconButton(
+                  onPressed: () => _showVsGateInfoDialog(context),
+                  icon: const Icon(Icons.info_outline, color: Colors.white),
+                  tooltip: 'ゲート効果を見る',
+                ),
+              ],
               // 測定ボタン（フリーランモードのみ表示、VSモードでは非表示）
               if (state.gameMode == GameMode.freeRun && !state.isGameOver) ...[
                 if (!state.isGameOver) const SizedBox(width: 16),
@@ -774,6 +811,84 @@ class _GameScreenState extends State<GameScreen> {
           ],
         ],
       ),
+    );
+  }
+
+  void _showVsGateInfoDialog(BuildContext context) {
+    const pages = [
+      ('assets/GateCheckpng.png', 'ゲート効果(CNOT以外)'),
+      ('assets/blackCNOT_all.png', 'CNOT[プレイヤー白]'),
+      ('assets/whiteCNOT_all.png', 'CNOT[プレイヤー黒]'),
+    ];
+
+    int currentPage = 0;
+    showDialog(
+      context: context,
+      builder: (dialogContext) {
+        return StatefulBuilder(
+          builder: (context, setDialogState) {
+            return AlertDialog(
+              backgroundColor: const Color(0xFF1A1F3A),
+              title: const Text(
+                'ゲート効果',
+                style: TextStyle(color: Colors.white),
+              ),
+              content: SizedBox(
+                width: MediaQuery.of(context).size.width * 0.8,
+                height: MediaQuery.of(context).size.height * 0.68,
+                child: Column(
+                  children: [
+                    Expanded(
+                      child: PageView.builder(
+                        itemCount: pages.length,
+                        onPageChanged: (index) {
+                          setDialogState(() {
+                            currentPage = index;
+                          });
+                        },
+                        itemBuilder: (context, index) {
+                          return Column(
+                            children: [
+                              Text(
+                                pages[index].$2,
+                                style: const TextStyle(
+                                  color: Colors.white,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                              const SizedBox(height: 8),
+                              Expanded(
+                                child: ClipRRect(
+                                  borderRadius: BorderRadius.circular(8),
+                                  child: Image.asset(
+                                    pages[index].$1,
+                                    fit: BoxFit.contain,
+                                  ),
+                                ),
+                              ),
+                            ],
+                          );
+                        },
+                      ),
+                    ),
+                    const SizedBox(height: 8),
+                    Text(
+                      '${currentPage + 1} / ${pages.length}',
+                      style: const TextStyle(color: Colors.white70),
+                    ),
+                  ],
+                ),
+              ),
+              actions: [
+                TextButton(
+                  onPressed: () => Navigator.of(dialogContext).pop(),
+                  child: const Text('閉じる'),
+                ),
+              ],
+            );
+          },
+        );
+      },
     );
   }
   
@@ -999,14 +1114,33 @@ class _GameScreenState extends State<GameScreen> {
     setState(() {
       _selectedGate = gate;
       _entangledErrorMessage = null; // エラーメッセージをクリア
-      // 2ビットゲートを選択したときのみ、駒の選択をリセット
       if (gate.isTwoBitGate) {
+        // 元の挙動: 2ビットゲート選択時は選択状態を必ずクリア
         _selectedPositions = [];
         _selectedRow = null;
         _selectedColumn = null;
+        _selectedRowDirection = null;
+        _selectedColumnDirection = null;
       }
-      // 1ビットゲートの場合は、既に選択されている駒の選択を保持
+      // 1ビットゲートへ切り替え時、1/2マス選択だけをリセットする
+      if (gate.isOneBitGate && _shouldResetSelectionForOneBitGate()) {
+        _selectedPositions = [];
+        _selectedRow = null;
+        _selectedColumn = null;
+        _selectedRowDirection = null;
+        _selectedColumnDirection = null;
+      }
+      // 4マス選択や行/列選択は維持
     });
+  }
+
+  bool _shouldResetSelectionForOneBitGate() {
+    final isRowOrColumnSelection = _selectedRow != null || _selectedColumn != null;
+    final isFourCellsSelection = _selectedPositions.length == 4;
+    if (isRowOrColumnSelection || isFourCellsSelection) {
+      return false;
+    }
+    return _selectedPositions.length == 1 || _selectedPositions.length == 2;
   }
   
   void _handleRowSelection(
@@ -1019,8 +1153,14 @@ class _GameScreenState extends State<GameScreen> {
       // 2ビットゲート選択時は行選択不可
       if (_selectedGate != null && _selectedGate!.isTwoBitGate) return;
       
-      _selectedRow = _selectedRow == row ? null : row;
+      final isSameRow = _selectedRow == row;
+      final isSameDirection = _selectedRowDirection == direction;
+      final shouldDeselect = isSameRow && isSameDirection;
+
+      _selectedRow = shouldDeselect ? null : row;
+      _selectedRowDirection = shouldDeselect ? null : direction;
       _selectedColumn = null;
+      _selectedColumnDirection = null;
       
       if (_selectedRow != null) {
         // エンタングル駒の手前まで選択範囲を制限
@@ -1045,8 +1185,14 @@ class _GameScreenState extends State<GameScreen> {
       // 2ビットゲート選択時は列選択不可
       if (_selectedGate != null && _selectedGate!.isTwoBitGate) return;
       
-      _selectedColumn = _selectedColumn == col ? null : col;
+      final isSameColumn = _selectedColumn == col;
+      final isSameDirection = _selectedColumnDirection == direction;
+      final shouldDeselect = isSameColumn && isSameDirection;
+
+      _selectedColumn = shouldDeselect ? null : col;
+      _selectedColumnDirection = shouldDeselect ? null : direction;
       _selectedRow = null;
+      _selectedRowDirection = null;
       
       if (_selectedColumn != null) {
         // エンタングル駒の手前まで選択範囲を制限
@@ -1099,10 +1245,14 @@ class _GameScreenState extends State<GameScreen> {
         }
         _selectedRow = null;
         _selectedColumn = null;
+        _selectedRowDirection = null;
+        _selectedColumnDirection = null;
       } else {
         // 1ビットゲートまたはゲート未選択: 1マス選択で4マス自動選択（エンタングル駒が含まれる場合は選択不可）
         _selectedRow = null;
         _selectedColumn = null;
+        _selectedRowDirection = null;
+        _selectedColumnDirection = null;
         
         // 禁止領域チェック: 4マス選択の場合、禁止領域の4マスを始点とする4マス選択を禁止
         final currentPlayer = provider.gameState.getCurrentPlayer();
@@ -1299,16 +1449,27 @@ class _GameScreenState extends State<GameScreen> {
     // 行/列選択の場合、禁止領域設定のために行/列全体の位置を使用
     List<Position> targetPositions;
     if (_selectedRow != null) {
-      // 行選択の場合、その行全体の位置を使用（エンタングル駒で止まっても行全体を禁止領域として設定）
+      // 行選択の場合、その行全体を“選択ボタン側からの順序”で渡す
+      // gate_service の entangled break は targetPositions の順序に依存するため、ハイライトと一致させる
+      final cols = provider.gameState.board.cols;
+      final isFromRight = _selectedRowDirection == 'right';
       targetPositions = List.generate(
-        provider.gameState.board.cols,
-        (col) => Position(_selectedRow!, col),
+        cols,
+        (i) {
+          final col = isFromRight ? (cols - 1 - i) : i;
+          return Position(_selectedRow!, col);
+        },
       );
     } else if (_selectedColumn != null) {
-      // 列選択の場合、その列全体の位置を使用（エンタングル駒で止まっても列全体を禁止領域として設定）
+      // 列選択の場合、その列全体を“選択ボタン側からの順序”で渡す
+      final rows = provider.gameState.board.rows;
+      final isFromBottom = _selectedColumnDirection == 'bottom';
       targetPositions = List.generate(
-        provider.gameState.board.rows,
-        (row) => Position(row, _selectedColumn!),
+        rows,
+        (i) {
+          final row = isFromBottom ? (rows - 1 - i) : i;
+          return Position(row, _selectedColumn!);
+        },
       );
     } else {
       // 4マス選択または2ビットゲート選択の場合、選択された位置を使用
@@ -1327,6 +1488,8 @@ class _GameScreenState extends State<GameScreen> {
         _selectedPositions = [];
         _selectedRow = null;
         _selectedColumn = null;
+        _selectedRowDirection = null;
+        _selectedColumnDirection = null;
       });
     }
   }

@@ -61,6 +61,14 @@ class _TutorialScreenState extends State<TutorialScreen> {
   
   bool get _isFirstPage => _currentPageIndex == 0;
   bool get _isLastPage => _currentPageIndex == _pages.length - 1;
+  bool get _isGateMasteryPage =>
+      _pages[_currentPageIndex].pageId == 'gate_mastery_complete-1';
+
+  Future<void> _goHome() async {
+    await _progressService.markTutorialCompleted();
+    if (!mounted) return;
+    Navigator.pop(context);
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -190,6 +198,70 @@ class _TutorialScreenState extends State<TutorialScreen> {
   }
 
   Widget _buildNavigationButtons() {
+    if (_isGateMasteryPage) {
+      return Container(
+        height: kToolbarHeight,
+        padding: const EdgeInsets.symmetric(horizontal: 16),
+        decoration: BoxDecoration(
+          color: const Color(0xFF1A1F3A).withOpacity(0.8),
+          border: Border(
+            top: BorderSide(
+              color: Colors.white.withOpacity(0.1),
+              width: 1,
+            ),
+          ),
+        ),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            TextButton(
+              onPressed: _isFirstPage ? null : _previousPage,
+              child: const Text(
+                '前へ',
+                style: TextStyle(color: Colors.white70),
+              ),
+            ),
+            ElevatedButton(
+              onPressed: _goHome,
+              style: ElevatedButton.styleFrom(
+                backgroundColor: const Color(0xFF4CAF50),
+                foregroundColor: Colors.white,
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 20,
+                  vertical: 16,
+                ),
+              ),
+              child: const Text(
+                'ホームへ',
+                style: TextStyle(
+                  fontSize: 16,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+            ),
+            ElevatedButton(
+              onPressed: _nextPage,
+              style: ElevatedButton.styleFrom(
+                backgroundColor: const Color(0xFF4CAF50),
+                foregroundColor: Colors.white,
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 20,
+                  vertical: 16,
+                ),
+              ),
+              child: const Text(
+                '次へ',
+                style: TextStyle(
+                  fontSize: 16,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+            ),
+          ],
+        ),
+      );
+    }
+
     return Container(
       height: kToolbarHeight,
       padding: const EdgeInsets.symmetric(horizontal: 16),

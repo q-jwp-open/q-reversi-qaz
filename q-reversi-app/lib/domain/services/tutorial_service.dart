@@ -158,8 +158,9 @@ class TutorialService {
         'Yゲート',           // 13ページ目（元のページ8）
         'SWAPゲート',        // 14ページ目（元のページ9）
         'CNOTゲート',        // 15ページ目（元のページ10-1）
-        'CNOTゲート',        // 16ページ目（元のページ10-2）
-        'CNOTゲート',        // 17ページ目（元のページ11-1）
+        'ゲート習得完了',    // 16ページ目（新規追加）
+        'CNOTゲート(発展)',        // 16ページ目（元のページ10-2）
+        'CNOTゲート(発展)',        // 17ページ目（元のページ11-1）
         'エンタングルメント', // 18ページ目（元のページ11-2）
         'CNOT全パターン[プレイヤー白]', // 19ページ目（元のページ12-1）
         'CNOT全パターン[プレイヤー黒]', // 20ページ目（元のページ12-2）
@@ -462,6 +463,26 @@ class TutorialService {
         ],
       ),
 
+      // ページ10.5: ゲート習得完了
+      const TutorialPage(
+        pageNumber: 10,
+        pageId: 'gate_mastery_complete',
+        pageTitle: 'ゲート習得完了',
+        slides: [
+          TutorialSlide(
+            slideId: 'gate_mastery_complete-1',
+            texts: [
+              'ここまでで基本のゲートはすべて習得しました。',
+              'この先は発展的な内容なので、今は覚えなくても大丈夫。まずはチャレンジモードから、楽しく量子コンピュータの仕組みに触れてみてください。興味がある方は、次の発展的な内容にも目を通してから遊んでみてください。',
+            ],
+            visualElement: TutorialVisualElement(
+              type: VisualElementType.image,
+              data: {'path': 'assets/AllGate.png'},
+            ),
+          ),
+        ],
+      ),
+
       // ページ11: CNOTゲート#2 - エンタングルメント
       const TutorialPage(
         pageNumber: 11,
@@ -471,7 +492,7 @@ class TutorialService {
           TutorialSlide(
             slideId: 'gate_cnot_2-1',
             texts: [
-              'さて、では1駒目がグレーだった場合はどうなるでしょう？',
+              'さて、ではCNOTゲートの1駒目がグレーだった場合はどうなるでしょう？',
               'グレーの場合、50%で白、50%で黒なので、2駒目が反転するかどうかも確率的になります。',
             ],
             visualElement: TutorialVisualElement(
@@ -542,7 +563,7 @@ class TutorialService {
             slideId: 'finish-1',
             texts: [
               '量子コンピュータでは、重ね合わせとエンタングルメントをうまく回路の中で使うことで、圧倒的な速度の計算ができるようになるのです。',
-              'さて、これでチュートリアルは終わりです。いつでも見返して、チャレンジモード、VSモードでゲート操作に慣れて、スタディモードで量子コンピュータの計算が早いと言われる一端を感じてみてください...!',
+              'このチュートリアルはいつでも見返して、チャレンジモード、VSモードでゲート操作に慣れて、スタディモードで量子コンピュータの計算が早いと言われる一端を感じてみてください...!',
             ],
             visualElement: TutorialVisualElement(
               type: VisualElementType.board,
