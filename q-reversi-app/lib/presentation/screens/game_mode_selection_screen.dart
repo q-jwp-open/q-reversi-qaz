@@ -3,7 +3,7 @@ import '../../domain/entities/game_mode.dart';
 import '../../domain/services/tutorial_progress_service.dart';
 import 'vs_mode_setup_screen.dart';
 import 'game_screen.dart';
-import 'challenge_level_selection_screen.dart';
+import 'challenge_flow_scope.dart';
 import 'tutorial_screen.dart';
 import '../../domain/entities/game_state.dart';
 import '../../domain/entities/board.dart';
@@ -79,7 +79,7 @@ class _GameModeSelectionScreenState extends State<GameModeSelectionScreen> {
               _buildModeCard(
                 context,
                 'チュートリアル',
-                'ゲームの遊び方と量子コンピュータの基本概念を学習',
+                'ゲームの遊び方と量子コンピュータの基礎知識を学習',
                 Icons.menu_book,
                 () async {
                   await Navigator.push(
@@ -97,13 +97,13 @@ class _GameModeSelectionScreenState extends State<GameModeSelectionScreen> {
               _buildModeCard(
                 context,
                 'チャレンジモード',
-                '特定の量子状態を作るミッション',
+                '特定の量子状態を作るパズルゲーム',
                 Icons.flag,
                 () {
                   Navigator.push(
                     context,
                     MaterialPageRoute(
-                      builder: (context) => const ChallengeLevelSelectionScreen(),
+                      builder: (context) => const ChallengeFlowScope(),
                     ),
                   );
                 },
@@ -129,7 +129,7 @@ class _GameModeSelectionScreenState extends State<GameModeSelectionScreen> {
               _buildModeCard(
                 context,
                 'フリーランモード',
-                '自由にゲートを演算可能なモード',
+                '自由にゲートを演算できるモード',
                 Icons.science,
                 () {
                   _startFreeRunMode(context);
@@ -140,15 +140,15 @@ class _GameModeSelectionScreenState extends State<GameModeSelectionScreen> {
               _buildModeCard(
                 context,
                 'スタディモード',
-                '量子コンピューティングを学習',
+                'Coming soon',
                 Icons.school,
-                () {
-                  // TODO: スタディモード実装
+                () {},
+                enabled: false,
+                onDisabledTap: () {
                   ScaffoldMessenger.of(context).showSnackBar(
                     const SnackBar(content: Text('スタディモードは準備中です')),
                   );
                 },
-                enabled: _isTutorialCompleted,
               ),
             ],
           ),
@@ -164,6 +164,7 @@ class _GameModeSelectionScreenState extends State<GameModeSelectionScreen> {
     IconData icon,
     VoidCallback onTap, {
     required bool enabled,
+    VoidCallback? onDisabledTap,
   }) {
     return Card(
       color: enabled
@@ -200,6 +201,10 @@ class _GameModeSelectionScreenState extends State<GameModeSelectionScreen> {
         onTap: enabled
             ? onTap
             : () {
+                if (onDisabledTap != null) {
+                  onDisabledTap();
+                  return;
+                }
                 ScaffoldMessenger.of(context).showSnackBar(
                   const SnackBar(
                     content: Text(

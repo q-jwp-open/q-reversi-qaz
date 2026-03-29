@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import '../../domain/entities/challenge_level.dart';
 import '../../domain/entities/challenge_progress.dart';
 import '../../domain/services/challenge_level_loader.dart';
-import '../../domain/services/challenge_progress_service.dart';
+import '../providers/challenge_progress_notifier.dart';
 import 'challenge_game_screen.dart';
 
 /// チャレンジレベル選択画面
@@ -15,10 +16,8 @@ class ChallengeLevelSelectionScreen extends StatefulWidget {
 
 class _ChallengeLevelSelectionScreenState extends State<ChallengeLevelSelectionScreen> {
   final ChallengeLevelLoader _loader = ChallengeLevelLoader();
-  final ChallengeProgressService _progressService = ChallengeProgressService();
-  
+
   List<ChallengeLevel> _levels = [];
-  ChallengeProgressManager? _progressManager;
   bool _isLoading = true;
   String? _error;
 
@@ -36,11 +35,12 @@ class _ChallengeLevelSelectionScreenState extends State<ChallengeLevelSelectionS
 
     try {
       final levels = await _loader.loadAllLevels();
-      final progressManager = await _progressService.loadProgress();
-      
+      if (!mounted) return;
+      await context.read<ChallengeProgressNotifier>().hydrate();
+
+      if (!mounted) return;
       setState(() {
         _levels = levels;
-        _progressManager = progressManager;
         _isLoading = false;
       });
     } catch (e) {
@@ -53,6 +53,8 @@ class _ChallengeLevelSelectionScreenState extends State<ChallengeLevelSelectionS
 
   @override
   Widget build(BuildContext context) {
+    final progressManager = context.watch<ChallengeProgressNotifier>().progress;
+
     return Scaffold(
       appBar: AppBar(
         title: const Text(
@@ -61,6 +63,16 @@ class _ChallengeLevelSelectionScreenState extends State<ChallengeLevelSelectionS
         ),
         backgroundColor: const Color(0xFF1A1F3A),
         foregroundColor: Colors.white,
+        leading: IconButton(
+          icon: const Icon(Icons.arrow_back),
+          onPressed: () {
+            if (Navigator.of(context).canPop()) {
+              Navigator.of(context).pop();
+            } else {
+              Navigator.of(context, rootNavigator: true).pop();
+            }
+          },
+        ),
       ),
       body: Container(
         decoration: const BoxDecoration(
@@ -77,7 +89,7 @@ class _ChallengeLevelSelectionScreenState extends State<ChallengeLevelSelectionS
             ? const Center(child: CircularProgressIndicator())
             : _error != null
                 ? _buildErrorWidget()
-                : _buildContent(),
+                : _buildContent(progressManager),
       ),
     );
   }
@@ -109,7 +121,7 @@ class _ChallengeLevelSelectionScreenState extends State<ChallengeLevelSelectionS
     );
   }
 
-  Widget _buildContent() {
+  Widget _buildContent(ChallengeProgressManager progressManager) {
     if (_levels.isEmpty) {
       return const Center(
         child: Text(
@@ -132,15 +144,20 @@ class _ChallengeLevelSelectionScreenState extends State<ChallengeLevelSelectionS
       itemBuilder: (context, index) {
         final stageNumber = index + 1;
         final stageLevels = stages[stageNumber] ?? [];
-        return _buildStageCard(stageNumber, stageLevels);
+        return _buildStageCard(stageNumber, stageLevels, progressManager);
       },
     );
   }
 
-  Widget _buildStageCard(int stageNumber, List<ChallengeLevel> levels) {
-    final isUnlocked = _progressManager?.isStageUnlocked(stageNumber) ?? (stageNumber == 1);
-    final completedCount = _progressManager?.getCompletedLevelsInStage(stageNumber) ?? 0;
-    final isPerfect = _progressManager?.isStagePerfect(stageNumber) ?? false;
+  Widget _buildStageCard(
+    int stageNumber,
+    List<ChallengeLevel> levels,
+    ChallengeProgressManager progressManager,
+  ) {
+    final isUnlocked =
+        progressManager.isStageUnlocked(stageNumber);
+    final completedCount = progressManager.getCompletedLevelsInStage(stageNumber);
+    final isPerfect = progressManager.isStagePerfect(stageNumber);
 
     return Card(
       margin: const EdgeInsets.only(bottom: 16),
@@ -194,7 +211,7 @@ class _ChallengeLevelSelectionScreenState extends State<ChallengeLevelSelectionS
                   itemCount: levels.length,
                   itemBuilder: (context, index) {
                     final level = levels[index];
-                    return _buildLevelButton(level);
+                    return _buildLevelButton(level, progressManager);
                   },
                 );
               },
@@ -205,9 +222,12 @@ class _ChallengeLevelSelectionScreenState extends State<ChallengeLevelSelectionS
     );
   }
 
-  Widget _buildLevelButton(ChallengeLevel level) {
-    final isUnlocked = _progressManager?.isLevelUnlocked(level.level) ?? (level.level == 1);
-    final progress = _progressManager?.allProgress[level.level];
+  Widget _buildLevelButton(
+    ChallengeLevel level,
+    ChallengeProgressManager progressManager,
+  ) {
+    final isUnlocked = progressManager.isLevelUnlocked(level.level);
+    final progress = progressManager.allProgress[level.level];
     final isCompleted = progress?.isCompleted ?? false;
     final stars = progress?.stars ?? 0;
 
@@ -350,17 +370,16 @@ class _ChallengeLevelSelectionScreenState extends State<ChallengeLevelSelectionS
   }
 
   void _startLevel(ChallengeLevel level) async {
-    final result = await Navigator.push(
+    await Navigator.push(
       context,
       MaterialPageRoute(
         builder: (context) => ChallengeGameScreen(level: level),
       ),
     );
 
-    // レベルクリア後に進捗を更新
-    if (result == true) {
-      await _loadData();
-    }
+    if (!mounted) return;
+    // ディスクと同期（Notifier はクリア時に既に更新済みだが、保険として再読込）
+    await context.read<ChallengeProgressNotifier>().hydrate();
   }
 }
 

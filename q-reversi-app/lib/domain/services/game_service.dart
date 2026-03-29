@@ -63,8 +63,19 @@ class GameService {
         }
       }
     }
-    // 1ビットゲートの場合は、GateService内で適切に処理される
-    
+
+    // 行／列1列（8マス）: GateService はエンタングルで break する。禁止マスはスキップするので、
+    // 「禁止だけを跨いだあと、まだ1マスも適用できないうちにエンタングルで止まる」場合は手を拒否する。
+    if (gate.isOneBitGate && targetPositions.length == 8) {
+      if (_oneBitLineStoppedByEntanglementWithNoApply(
+            gameState,
+            targetPositions,
+            currentPlayer.id,
+          )) {
+        return gameState;
+      }
+    }
+
     // ゲートを適用
     var newState = _gateService.applyGate(gameState, gate, targetPositions);
 
@@ -173,18 +184,65 @@ class GameService {
     );
   }
   
+  /// [GateService] の行／列走査と同じ順序で、適用前にエンタングルで止まり1マスも変えられないか。
+  bool _oneBitLineStoppedByEntanglementWithNoApply(
+    GameState gameState,
+    List<Position> positions,
+    int playerId,
+  ) {
+    final forbiddenAreas = gameState.getForbiddenAreas(playerId);
+    bool isPositionForbidden(Position position) {
+      for (final area in forbiddenAreas) {
+        if (area.type == ForbiddenAreaType.row && area.row == position.row) {
+          return true;
+        }
+        if (area.type == ForbiddenAreaType.column && area.column == position.col) {
+          return true;
+        }
+        if (area.type == ForbiddenAreaType.fourPieces &&
+            area.positions != null &&
+            area.positions!.any((p) => p == position)) {
+          return true;
+        }
+      }
+      return false;
+    }
+
+    var wouldApplyBeforeEntangledBreak = false;
+    for (final position in positions) {
+      final piece = gameState.board.getPiece(position.row, position.col);
+      if (piece == null) continue;
+      if (piece.isEntangled) {
+        return !wouldApplyBeforeEntangledBreak;
+      }
+      if (isPositionForbidden(position)) continue;
+      wouldApplyBeforeEntangledBreak = true;
+    }
+    return false;
+  }
+
   /// ターゲットが禁止領域かどうか
+  ///
+  /// 行・列の禁止は「その行／列全体を対象にした手」のみ拒否する。
+  /// 列選択で禁止行と1マスだけ交差する場合など、GateService 側でスキップして
+  /// 続きのマスに適用できるケースはここでは拒否しない。
   bool _isTargetForbidden(
     ForbiddenArea area,
     GateType gate,
     List<Position> targetPositions,
   ) {
     if (gate.isOneBitGate) {
-      if (area.type == ForbiddenAreaType.row && targetPositions.isNotEmpty) {
-        return area.row == targetPositions.first.row;
+      if (area.type == ForbiddenAreaType.row &&
+          area.row != null &&
+          targetPositions.isNotEmpty) {
+        final r = area.row!;
+        return targetPositions.every((p) => p.row == r);
       }
-      if (area.type == ForbiddenAreaType.column && targetPositions.isNotEmpty) {
-        return area.column == targetPositions.first.col;
+      if (area.type == ForbiddenAreaType.column &&
+          area.column != null &&
+          targetPositions.isNotEmpty) {
+        final c = area.column!;
+        return targetPositions.every((p) => p.col == c);
       }
       if (area.type == ForbiddenAreaType.fourPieces) {
         return area.isFourPiecesForbidden(targetPositions);

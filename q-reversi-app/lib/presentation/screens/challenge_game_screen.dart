@@ -10,7 +10,7 @@ import '../../domain/entities/challenge_progress.dart';
 import '../../domain/entities/board.dart';
 import '../../domain/services/challenge_game_service.dart';
 import '../../domain/services/challenge_level_loader.dart';
-import '../../domain/services/challenge_progress_service.dart';
+import '../providers/challenge_progress_notifier.dart';
 import '../providers/game_provider.dart';
 import '../widgets/board_widget.dart';
 import '../widgets/gate_button.dart';
@@ -48,7 +48,6 @@ class _ChallengeGameScreenState extends State<ChallengeGameScreen> {
   double _horizontalDragOffset = 0;
   bool _isSwipeNavigating = false;
   List<ChallengeLevel> _allLevels = const [];
-  ChallengeProgressManager? _progressManager;
   int _guideStepIndex = 0;
   List<_GuideStep> _guideSteps = const [];
   final GlobalKey _goalConditionKey = GlobalKey();
@@ -59,7 +58,6 @@ class _ChallengeGameScreenState extends State<ChallengeGameScreen> {
   OverlayEntry? _guideOverlay;
 
   final ChallengeGameService _challengeService = ChallengeGameService();
-  final ChallengeProgressService _progressService = ChallengeProgressService();
   final ChallengeLevelLoader _levelLoader = ChallengeLevelLoader();
 
   @override
@@ -78,11 +76,9 @@ class _ChallengeGameScreenState extends State<ChallengeGameScreen> {
 
   Future<void> _loadSwipePreviewData() async {
     final levels = await _levelLoader.loadAllLevels();
-    final progress = await _progressService.loadProgress();
     if (!mounted) return;
     setState(() {
       _allLevels = levels;
-      _progressManager = progress;
     });
   }
 
@@ -102,23 +98,23 @@ class _ChallengeGameScreenState extends State<ChallengeGameScreen> {
     _guideSteps = [
       _GuideStep(
         key: _goalConditionKey,
-        message: 'クリア条件を確認してください。盤面をすべて白にするか、黒にしたらレベルクリアです',
+        message: '1. クリア条件を確認してください。盤面をすべて白にするか、黒にしたらレベルクリアです',
       ),
       _GuideStep(
         key: _xGateButtonKey,
-        message: 'ゲートを選択してください',
+        message: '2. ゲートを選択してください',
       ),
       _GuideStep(
         key: _boardAreaKey,
-        message: '適用する駒を選択してください。盤面の中をタップか、盤面の外のボタンをタップしてください',
+        message: '3. 適用する駒を選択してください。盤面の中をタップか、盤面の外のボタンをタップしてください',
       ),
       _GuideStep(
         key: _applyGateButtonKey,
-        message: '"ゲートを適用"ボタンでゲートを駒に適用させて下さい',
+        message: '4. "ゲートを適用"ボタンでゲートを駒に適用させて下さい',
       ),
       _GuideStep(
         key: _gateInfoButtonKey,
-        message: 'いつでもこのiボタンから、ゲートの効果を確認できます',
+        message: '5. いつでもこのinfoボタンから、ゲートの効果を確認できます',
       ),
     ];
     _guideStepIndex = 0;
@@ -281,6 +277,7 @@ class _ChallengeGameScreenState extends State<ChallengeGameScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final challengeProgress = context.watch<ChallengeProgressNotifier>().progress;
     final gameState = _challengeService.createChallengeGameState(widget.level);
 
     return ChangeNotifierProvider(
@@ -317,7 +314,9 @@ class _ChallengeGameScreenState extends State<ChallengeGameScreen> {
           },
           child: Stack(
             children: [
-              Positioned.fill(child: _buildSwipePreview()),
+              Positioned.fill(
+                child: _buildSwipePreview(challengeProgress),
+              ),
               Transform.translate(
                 offset: Offset(_horizontalDragOffset, 0),
                 child: Container(
@@ -450,11 +449,11 @@ class _ChallengeGameScreenState extends State<ChallengeGameScreen> {
       }
     }
     if (targetLevel == null) return false;
-
-    final progressManager = await _progressService.loadProgress();
-    if (!progressManager.isLevelUnlocked(targetLevel.level)) return false;
-
     if (!mounted) return false;
+
+    final progressManager =
+        context.read<ChallengeProgressNotifier>().progress;
+    if (!progressManager.isLevelUnlocked(targetLevel.level)) return false;
     Navigator.of(context).pushReplacement(
       MaterialPageRoute(
         builder: (context) => ChallengeGameScreen(level: targetLevel!),
@@ -463,7 +462,7 @@ class _ChallengeGameScreenState extends State<ChallengeGameScreen> {
     return true;
   }
 
-  Widget _buildSwipePreview() {
+  Widget _buildSwipePreview(ChallengeProgressManager progressManager) {
     if (_horizontalDragOffset == 0) return const SizedBox.shrink();
 
     final targetLevelNumber = _horizontalDragOffset > 0
@@ -472,7 +471,7 @@ class _ChallengeGameScreenState extends State<ChallengeGameScreen> {
     final level = _findLevelByNumber(targetLevelNumber);
     if (level == null) return const SizedBox.shrink();
 
-    final isUnlocked = _progressManager?.isLevelUnlocked(level.level) ?? false;
+    final isUnlocked = progressManager.isLevelUnlocked(level.level);
     final align = _horizontalDragOffset > 0
         ? Alignment.centerLeft
         : Alignment.centerRight;
@@ -1105,10 +1104,8 @@ class _ChallengeGameScreenState extends State<ChallengeGameScreen> {
     final turnsUsed = state.turnCount;
     final stars = _calculateStars(turnsUsed, widget.level.optimalTurns);
 
-    // 進捗を保存
-    final progressManager = await _progressService.loadProgress();
-    await _progressService.completeLevel(
-      progressManager,
+    // 進捗を保存（サービス内で最新を再読込してからマージ）
+    await context.read<ChallengeProgressNotifier>().completeLevel(
       widget.level.level,
       turnsUsed,
       widget.level.optimalTurns,

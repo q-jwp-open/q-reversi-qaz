@@ -10,6 +10,10 @@ class ChallengeProgressService {
   Future<ChallengeProgressManager> loadProgress() async {
     try {
       final prefs = await SharedPreferences.getInstance();
+      // 直前の setString 直後にキャッシュだけが古いままになる端末対策
+      try {
+        await prefs.reload();
+      } catch (_) {}
       final progressJson = prefs.getString(_progressKey);
       
       if (progressJson == null) {
@@ -58,16 +62,16 @@ class ChallengeProgressService {
     }
   }
 
-  /// レベルをクリア
+  /// レベルをクリア（保存直前に必ずストレージから再読込し、他レベルの記録を消さない）
   Future<ChallengeProgressManager> completeLevel(
-    ChallengeProgressManager manager,
     int level,
     int turnsUsed,
     int optimalTurns,
   ) async {
-    final currentProgress = manager.allProgress[level];
+    final latest = await loadProgress();
+    final currentProgress = latest.allProgress[level];
     final stars = _calculateStars(turnsUsed, optimalTurns);
-    
+
     final newProgress = ChallengeProgress(
       level: level,
       isCompleted: true,
@@ -76,15 +80,15 @@ class ChallengeProgressService {
     );
 
     // 既存の進捗より良い場合のみ更新
-    if (currentProgress == null || 
-        !currentProgress.isCompleted || 
+    if (currentProgress == null ||
+        !currentProgress.isCompleted ||
         stars > currentProgress.stars) {
-      final updatedManager = manager.updateProgress(newProgress);
+      final updatedManager = latest.updateProgress(newProgress);
       await saveProgress(updatedManager);
       return updatedManager;
     }
 
-    return manager;
+    return latest;
   }
 
   /// スター数を計算

@@ -226,7 +226,7 @@ class TutorialService {
           TutorialSlide(
             slideId: 'operation-1',
             texts: [
-              '8x8の盤面のそれぞれのマスにある駒を量子コンピュータのビットとして、その盤面の縦/横/正方4マスに対して量子コンピュータの演算をかけていくゲームです。',
+              '8x8の盤面のそれぞれのマスにある駒を量子コンピュータのビットとして、その盤面の縦横1列/正方4マスに対して量子コンピュータの演算をかけていくゲームです。',
             ],
             visualElement: TutorialVisualElement(
               type: VisualElementType.animation,
@@ -304,7 +304,7 @@ class TutorialService {
           TutorialSlide(
             slideId: 'superposition-2',
             texts: [
-              'グレー駒がどちらの色に転んだかは、量子コンピュータの操作の"測定"をすることで、白(0)か黒(1)に確定し、計算結果を得ることができます。',
+              'グレー駒がどちらの色に転んだかは、量子コンピュータの操作、"測定"をすることで、白(0)か黒(1)に確定し、計算結果を得ることができます。',
               'このゲームでは、グレー駒は測定すると50%の確率で白(0)か黒(1)に確定するものとします。',
             ],
             visualElement: TutorialVisualElement(
@@ -335,7 +335,7 @@ class TutorialService {
           TutorialSlide(
             slideId: 'gate_intro-2',
             texts: [
-              '量子コンピュータにも、量子ゲートと呼ばれる、量子ビットに作用させるゲートがあります。',
+              '量子コンピュータにも、量子ゲートと呼ばれる、量子ビットに作用させる演算操作があります。',
               'このゲームでは、代表的な量子ゲートを使用します。',
             ],
             visualElement: TutorialVisualElement(
@@ -472,8 +472,9 @@ class TutorialService {
           TutorialSlide(
             slideId: 'gate_mastery_complete-1',
             texts: [
-              'ここまでで基本のゲートはすべて習得しました。',
-              'この先は発展的な内容なので、今は覚えなくても大丈夫。まずはチャレンジモードから、楽しく量子コンピュータの仕組みに触れてみてください。興味がある方は、次の発展的な内容にも目を通してから遊んでみてください。',
+              'ここまでで基本のゲートの習得は完了です。',
+              'この先は発展的な内容なので、今は覚えなくても大丈夫です。下のホームへボタンをタップして、まずはチャレンジモードから、楽しく量子コンピュータのゲート操作に触れてみてください。',
+              '興味がある方は、ぜひ次の発展的な内容にも目を通してから遊んでみてください。',
             ],
             visualElement: TutorialVisualElement(
               type: VisualElementType.image,
@@ -492,7 +493,7 @@ class TutorialService {
           TutorialSlide(
             slideId: 'gate_cnot_2-1',
             texts: [
-              'さて、ではCNOTゲートの1駒目がグレーだった場合はどうなるでしょう？',
+              'さて、ここでCNOTゲートについて少し深く考えてみます。1駒目が黒や白ではなく、グレーだった場合はどうなるでしょう？',
               'グレーの場合、50%で白、50%で黒なので、2駒目が反転するかどうかも確率的になります。',
             ],
             visualElement: TutorialVisualElement(

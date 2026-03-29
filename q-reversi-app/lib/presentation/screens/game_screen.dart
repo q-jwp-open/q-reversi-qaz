@@ -10,6 +10,7 @@ import '../../domain/entities/piece.dart';
 import '../../domain/entities/board.dart';
 import '../../domain/entities/forbidden_area.dart';
 import '../providers/game_provider.dart';
+import '../../domain/services/vs_cpu_progress_service.dart';
 import '../widgets/board_widget.dart';
 import '../widgets/gate_button.dart';
 import '../widgets/piece_widget.dart';
@@ -1018,11 +1019,10 @@ class _GameScreenState extends State<GameScreen> {
             ),
           ),
           TextButton(
-            onPressed: () {
+            onPressed: () async {
               Navigator.pop(context);
               provider.measure();
-              // 測定後、勝利条件を判定して結果画面を表示
-              _showGameResult(context, provider);
+              await _showGameResult(context, provider);
             },
             child: const Text(
               'OK',
@@ -1034,12 +1034,12 @@ class _GameScreenState extends State<GameScreen> {
     );
   }
   
-  void _showGameResult(BuildContext context, GameProvider provider) {
+  Future<void> _showGameResult(BuildContext context, GameProvider provider) async {
     final state = provider.gameState;
     final board = state.board;
     var whiteCount = 0;
     var blackCount = 0;
-    
+
     for (int r = 0; r < board.rows; r++) {
       for (int c = 0; c < board.cols; c++) {
         final piece = board.getPiece(r, c);
@@ -1049,7 +1049,7 @@ class _GameScreenState extends State<GameScreen> {
         }
       }
     }
-    
+
     String result;
     if (whiteCount > blackCount) {
       result = '白の勝利！';
@@ -1058,7 +1058,27 @@ class _GameScreenState extends State<GameScreen> {
     } else {
       result = '引き分け';
     }
-    
+
+    final vsCpu = state.gameMode == GameMode.vs &&
+        state.vsMode == VsMode.cpu;
+    final cpuDifficulty = state.players[2]?.aiDifficulty;
+    if (vsCpu && cpuDifficulty != null) {
+      final VsCpuGameOutcome outcome;
+      if (whiteCount > blackCount) {
+        outcome = VsCpuGameOutcome.win;
+      } else if (blackCount > whiteCount) {
+        outcome = VsCpuGameOutcome.loss;
+      } else {
+        outcome = VsCpuGameOutcome.draw;
+      }
+      await VsCpuProgressService().recordVsCpuGame(
+        difficulty: cpuDifficulty,
+        outcome: outcome,
+      );
+    }
+
+    if (!context.mounted) return;
+
     showDialog(
       context: context,
       builder: (context) => AlertDialog(
