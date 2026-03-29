@@ -68,7 +68,7 @@ level,turn,available gate,victory condition,,,,,,,,,,,comment
 ,,,,7,B,B,B,B,B,B,B,B,,
 ,,,,8,B,B,B,B,B,B,B,B,,
 level,turn,available gate,victory condition,,,,,,,,,,,comment
-7,3,X/H,All white,,,,,,,,,,,learn H_4
+7,2,X/H,All white,,,,,,,,,,,learn H_4
 ,,,,,1,2,3,4,5,6,7,8,,
 ,,,,1,W,W,W,B,W,W,W,W,,
 ,,,,2,W,W,W,B,W,W,W,W,,
@@ -101,12 +101,12 @@ level,turn,available gate,victory condition,,,,,,,,,,,comment
 ,,,,7,B,B,B,B,B,B,B,B,,
 ,,,,8,B,B,B,B,B,B,B,B,,
 level,turn,available gate,victory condition,,,,,,,,,,,comment
-10,3,X/H/Z,All black,,,,,,,,,,,learn Z_3
+10,2,H/Z,All black,,,,,,,,,,,learn Z_3
 ,,,,,1,2,3,4,5,6,7,8,,
 ,,,,1,B,B,B,B,-,B,B,B,,
 ,,,,2,B,B,B,B,-,B,B,B,,
 ,,,,3,B,B,B,B,-,B,B,B,,
-,,,,4,W,W,W,W,+,W,W,W,,
+,,,,4,B,B,B,B,+,B,B,B,,
 ,,,,5,B,B,B,B,-,B,B,B,,
 ,,,,6,B,B,B,B,-,B,B,B,,
 ,,,,7,B,B,B,B,-,B,B,B,,
@@ -145,51 +145,29 @@ level,turn,available gate,victory condition,,,,,,,,,,,comment
 ,,,,7,B,B,B,B,B,B,B,B,,
 ,,,,8,B,B,B,B,B,B,B,B,,
 level,turn,available gate,victory condition,,,,,,,,,,,comment
-14,3,X/H/Y,All white,,,,,,,,,,,learn Y_4
-,,,,,1,2,3,4,5,6,7,8,,
-,,,,1,W,W,W,W,W,W,W,W,,
-,,,,2,W,W,W,W,W,W,W,W,,
-,,,,3,W,W,W,W,W,W,W,W,,
-,,,,4,W,W,W,-,-,W,W,W,,
-,,,,5,W,W,W,+,+,W,W,W,,
-,,,,6,W,W,W,W,W,W,W,W,,
-,,,,7,W,W,W,W,W,W,W,W,,
-,,,,8,W,W,W,W,W,W,W,W,,
-level,turn,available gate,victory condition,,,,,,,,,,,comment
-15,4,H/Z/Y,All white,,,,,,,,,,,learn Y_5
+14,4,H/Z/Y,All white,,,,,,,,,,,learn Y_5
 ,,,,,1,2,3,4,5,6,7,8,,
 ,,,,1,W,W,W,-,W,+,W,W,,
 ,,,,2,W,W,W,-,W,+,W,W,,
 ,,,,3,W,W,W,-,W,+,W,W,,
-,,,,4,W,W,W,+,W,-,W,W,,
+,,,,4,B,B,B,+,B,-,B,B,,
 ,,,,5,W,W,W,-,W,+,W,W,,
 ,,,,6,W,W,W,-,W,+,W,W,,
 ,,,,7,W,W,W,-,W,+,W,W,,
 ,,,,8,W,W,W,-,W,+,W,W,,
 level,turn,available gate,victory condition,,,,,,,,,,,comment
-16,3,X/H,All white,,,,,,,,,,,
+15,4,H/Y,All white,,,,,,,,,,,
 ,,,,,1,2,3,4,5,6,7,8,,
-,,,,1,W,W,W,W,W,W,W,W,,
-,,,,2,W,W,W,W,W,W,W,W,,
-,,,,3,W,W,W,B,B,W,W,W,,
-,,,,4,W,W,W,+,+,W,W,W,,
-,,,,5,W,W,W,-,-,W,W,W,,
-,,,,6,W,W,W,B,B,W,W,W,,
-,,,,7,W,W,W,W,W,W,W,W,,
-,,,,8,W,W,W,W,W,W,W,W,,
+,,,,1,W,W,W,B,W,W,W,W,,
+,,,,2,W,W,W,B,W,W,W,W,,
+,,,,3,W,W,W,B,W,W,W,W,,
+,,,,4,B,B,-,+,B,-,-,B,,
+,,,,5,W,W,+,-,W,+,+,W,,
+,,,,6,W,W,W,B,W,W,W,W,,
+,,,,7,W,W,W,B,W,W,W,W,,
+,,,,8,W,W,W,B,W,W,W,W,,
 level,turn,available gate,victory condition,,,,,,,,,,,comment
-17,3,H/Y,All black,,,,,,,,,,,
-,,,,,1,2,3,4,5,6,7,8,,
-,,,,1,B,B,B,-,B,B,B,B,,
-,,,,2,B,B,B,-,B,B,B,B,,
-,,,,3,B,B,B,-,B,B,B,B,,
-,,,,4,B,B,B,B,-,B,B,B,,
-,,,,5,W,W,W,W,+,W,W,W,,
-,,,,6,B,B,B,-,B,B,B,B,,
-,,,,7,B,B,B,-,B,B,B,B,,
-,,,,8,B,B,B,-,B,B,B,B,,
-level,turn,available gate,victory condition,,,,,,,,,,,comment
-18,4,H/Y,All black,,,,,,,,,,,
+16,4,H/Y,All black,,,,,,,,,,,
 ,,,,,1,2,3,4,5,6,7,8,,
 ,,,,1,B,B,B,B,B,B,B,B,,
 ,,,,2,B,B,B,B,B,B,B,B,,
@@ -200,7 +178,7 @@ level,turn,available gate,victory condition,,,,,,,,,,,comment
 ,,,,7,B,B,B,B,B,B,B,B,,
 ,,,,8,B,B,B,B,B,B,B,B,,
 level,turn,available gate,victory condition,,,,,,,,,,,comment
-19,4,X/Z/H,All black,,,,,,,,,,,
+17,4,X/Z/H,All black,,,,,,,,,,,
 ,,,,,1,2,3,4,5,6,7,8,,
 ,,,,1,B,B,B,B,B,B,B,B,,
 ,,,,2,B,B,B,B,B,B,B,B,,
@@ -211,7 +189,18 @@ level,turn,available gate,victory condition,,,,,,,,,,,comment
 ,,,,7,B,B,B,B,B,B,B,B,,
 ,,,,8,B,B,B,B,B,B,B,B,,
 level,turn,available gate,victory condition,,,,,,,,,,,comment
-20,3,Y/H/SWAP,All black,,,,,,,,,,,
+18,2,X/SWAP,All black,,,,,,,,,,,learn SWAP
+,,,,,1,2,3,4,5,6,7,8,,
+,,,,1,B,B,B,B,B,B,B,B,,
+,,,,2,B,B,B,B,B,B,B,B,,
+,,,,3,B,B,W,B,B,B,B,B,,
+,,,,4,W,W,B,W,W,W,W,W,,
+,,,,5,B,B,B,B,B,B,B,B,,
+,,,,6,B,B,B,B,B,B,B,B,,
+,,,,7,B,B,B,B,B,B,B,B,,
+,,,,8,B,B,B,B,B,B,B,B,,
+level,turn,available gate,victory condition,,,,,,,,,,,comment
+19,3,Y/H/SWAP,All black,,,,,,,,,,,
 ,,,,,1,2,3,4,5,6,7,8,,
 ,,,,1,B,B,B,-,B,B,B,B,,
 ,,,,2,B,B,B,-,B,B,B,B,,
@@ -222,7 +211,29 @@ level,turn,available gate,victory condition,,,,,,,,,,,comment
 ,,,,7,B,B,B,-,B,B,B,B,,
 ,,,,8,B,B,B,-,B,B,B,B,,
 level,turn,available gate,victory condition,,,,,,,,,,,comment
-21,3,X/CNOT,All white,,,,,,,,,,,
+20,3,H/Y/SWAP,All white,,,,,,,,,,,
+,,,,,1,2,3,4,5,6,7,8,,
+,,,,1,W,W,W,B,W,W,W,W,,
+,,,,2,W,W,W,B,W,W,W,W,,
+,,,,3,W,W,W,B,W,W,W,W,,
+,,,,4,+,+,+,W,+,+,+,+,,
+,,,,5,W,W,W,B,-,W,W,W,,
+,,,,6,W,W,W,B,W,W,W,W,,
+,,,,7,W,W,W,B,W,W,W,W,,
+,,,,8,W,W,W,B,W,W,W,W,,
+level,turn,available gate,victory condition,,,,,,,,,,,comment
+21,1,CNOT,All black,,,,,,,,,,,learn CNOT
+,,,,,1,2,3,4,5,6,7,8,,
+,,,,1,B,B,B,B,B,B,B,B,,
+,,,,2,B,B,B,B,B,B,B,B,,
+,,,,3,B,B,B,B,B,B,B,B,,
+,,,,4,B,B,B,W,B,B,B,B,,
+,,,,5,B,B,B,B,B,B,B,B,,
+,,,,6,B,B,B,B,B,B,B,B,,
+,,,,7,B,B,B,B,B,B,B,B,,
+,,,,8,B,B,B,B,B,B,B,B,,
+level,turn,available gate,victory condition,,,,,,,,,,,comment
+22,3,X/CNOT,All white,,,,,,,,,,,
 ,,,,,1,2,3,4,5,6,7,8,,
 ,,,,1,W,W,W,B,W,W,W,W,,
 ,,,,2,W,W,W,B,W,W,W,W,,
@@ -232,17 +243,6 @@ level,turn,available gate,victory condition,,,,,,,,,,,comment
 ,,,,6,W,W,W,B,W,W,W,W,,
 ,,,,7,W,W,W,B,W,W,W,W,,
 ,,,,8,W,W,W,B,W,W,W,W,,
-level,turn,available gate,victory condition,,,,,,,,,,,comment
-22,4,H/Y,All white,,,,,,,,,,,
-,,,,,1,2,3,4,5,6,7,8,,
-,,,,1,W,W,W,+,B,W,W,W,,
-,,,,2,W,W,W,+,B,W,W,W,,
-,,,,3,W,W,W,+,B,W,W,W,,
-,,,,4,+,+,+,W,-,+,+,+,,
-,,,,5,B,B,B,-,W,B,B,B,,
-,,,,6,W,W,W,+,B,W,W,W,,
-,,,,7,W,W,W,+,B,W,W,W,,
-,,,,8,W,W,W,+,B,W,W,W,,
 level,turn,available gate,victory condition,,,,,,,,,,,comment
 23,3,H/CNOT,All black,,,,,,,,,,,
 ,,,,,1,2,3,4,5,6,7,8,,
@@ -255,18 +255,7 @@ level,turn,available gate,victory condition,,,,,,,,,,,comment
 ,,,,7,B,B,B,B,B,B,B,B,,
 ,,,,8,B,B,B,B,B,B,B,B,,
 level,turn,available gate,victory condition,,,,,,,,,,,comment
-24,3,H/Y/SWAP,All white,,,,,,,,,,,
-,,,,,1,2,3,4,5,6,7,8,,
-,,,,1,W,W,W,B,W,W,W,W,,
-,,,,2,W,W,W,B,W,W,W,W,,
-,,,,3,W,W,W,B,W,W,W,W,,
-,,,,4,+,+,+,W,+,+,+,+,,
-,,,,5,W,W,W,B,-,W,W,W,,
-,,,,6,W,W,W,B,W,W,W,W,,
-,,,,7,W,W,W,B,W,W,W,W,,
-,,,,8,W,W,W,B,W,W,W,W,,
-level,turn,available gate,victory condition,,,,,,,,,,,comment
-25,5,H/X/Z,All white,,,,,,,,,,,
+24,5,H/X/Z,All white,,,,,,,,,,,
 ,,,,,1,2,3,4,5,6,7,8,,
 ,,,,1,W,W,W,W,W,W,W,W,,
 ,,,,2,W,W,W,W,W,W,W,W,,
@@ -277,29 +266,18 @@ level,turn,available gate,victory condition,,,,,,,,,,,comment
 ,,,,7,W,W,W,W,W,W,W,W,,
 ,,,,8,W,W,W,W,W,W,W,W,,
 level,turn,available gate,victory condition,,,,,,,,,,,comment
-26,4,H/Y,All white,,,,,,,,,,,
+25,4,X/H/Z,All white,,,,,,,,,,,auto generated (N=4, central, overlap)
 ,,,,,1,2,3,4,5,6,7,8,,
-,,,,1,W,W,W,B,W,W,W,W,,
-,,,,2,W,W,W,B,W,W,W,W,,
-,,,,3,W,W,W,B,W,W,W,W,,
-,,,,4,B,B,-,+,B,-,-,B,,
-,,,,5,W,W,+,-,W,+,+,W,,
-,,,,6,W,W,W,B,W,W,W,W,,
-,,,,7,W,W,W,B,W,W,W,W,,
-,,,,8,W,W,W,B,W,W,W,W,,
+,,,,1,W,W,B,W,W,W,W,W,,
+,,,,2,W,W,B,W,W,W,W,W,,
+,,,,3,W,W,B,W,W,W,W,W,,
+,,,,4,W,W,B,W,W,W,W,W,,
+,,,,5,W,W,B,W,W,W,W,W,,
+,,,,6,-,-,-,-,-,+,+,-,,
+,,,,7,W,W,B,W,W,W,W,W,,
+,,,,8,W,W,B,W,W,W,W,W,,
 level,turn,available gate,victory condition,,,,,,,,,,,comment
-27,4,X/Y/Z/H,All white,,,,,,,,,,,
-,,,,,1,2,3,4,5,6,7,8,,
-,,,,1,W,W,W,W,W,W,W,W,,
-,,,,2,W,W,W,W,W,W,W,W,,
-,,,,3,W,W,W,W,W,W,W,W,,
-,,,,4,W,W,B,-,+,B,W,W,,
-,,,,5,W,W,B,+,-,B,W,W,,
-,,,,6,W,W,W,W,W,W,W,W,,
-,,,,7,W,W,W,W,W,W,W,W,,
-,,,,8,W,W,W,W,W,W,W,W,,
-level,turn,available gate,victory condition,,,,,,,,,,,comment
-28,4,Z/H,All white,,,,,,,,,,,
+26,4,Z/H,All white,,,,,,,,,,,
 ,,,,,1,2,3,4,5,6,7,8,,
 ,,,,1,W,W,W,W,W,W,W,W,,
 ,,,,2,W,W,W,W,W,W,W,W,,
@@ -310,7 +288,7 @@ level,turn,available gate,victory condition,,,,,,,,,,,comment
 ,,,,7,W,W,W,W,W,W,W,W,,
 ,,,,8,W,W,W,W,W,W,W,W,,
 level,turn,available gate,victory condition,,,,,,,,,,,comment
-29,3,X,All white,,,,,,,,,,,
+27,3,X,All white,,,,,,,,,,,
 ,,,,,1,2,3,4,5,6,7,8,,
 ,,,,1,W,W,W,W,W,W,W,W,,
 ,,,,2,W,W,W,W,W,W,W,W,,
@@ -321,7 +299,7 @@ level,turn,available gate,victory condition,,,,,,,,,,,comment
 ,,,,7,W,W,W,W,W,W,W,W,,
 ,,,,8,W,W,W,W,W,W,W,W,,
 level,turn,available gate,victory condition,,,,,,,,,,,comment
-30,5,H/X/Y,All white,,,,,,,,,,,
+28,5,H/X/Y,All white,,,,,,,,,,,
 ,,,,,1,2,3,4,5,6,7,8,,
 ,,,,1,W,W,W,W,W,W,W,W,,
 ,,,,2,W,W,W,W,W,W,W,W,,
@@ -332,18 +310,7 @@ level,turn,available gate,victory condition,,,,,,,,,,,comment
 ,,,,7,W,W,W,W,W,W,W,W,,
 ,,,,8,W,W,W,W,W,W,W,W,,
 level,turn,available gate,victory condition,,,,,,,,,,,comment
-31,8,X,All white,,,,,,,,,,,
-,,,,,1,2,3,4,5,6,7,8,,
-,,,,1,W,W,W,B,B,W,W,W,,
-,,,,2,W,W,W,B,B,W,W,W,,
-,,,,3,W,W,B,W,W,B,W,W,,
-,,,,4,B,B,W,B,B,W,B,B,,
-,,,,5,B,B,W,B,B,W,B,B,,
-,,,,6,W,W,B,W,W,B,W,W,,
-,,,,7,W,W,W,B,B,W,W,W,,
-,,,,8,W,W,W,B,B,W,W,W,,
-level,turn,available gate,victory condition,,,,,,,,,,,comment
-32,4,X,All white,,,,,,,,,,,
+29,4,X,All white,,,,,,,,,,,
 ,,,,,1,2,3,4,5,6,7,8,,
 ,,,,1,W,W,W,W,W,W,W,W,,
 ,,,,2,W,W,W,W,W,W,W,W,,
@@ -354,7 +321,29 @@ level,turn,available gate,victory condition,,,,,,,,,,,comment
 ,,,,7,W,W,W,W,W,W,W,W,,
 ,,,,8,W,W,W,W,W,W,W,W,,
 level,turn,available gate,victory condition,,,,,,,,,,,comment
-33,3,X/H,All white,,,,,,,,,,,auto generated (N=3, central, overlap)
+30,8,X,All white,,,,,,,,,,,
+,,,,,1,2,3,4,5,6,7,8,,
+,,,,1,W,W,W,B,B,W,W,W,,
+,,,,2,W,W,W,B,B,W,W,W,,
+,,,,3,W,W,B,W,W,B,W,W,,
+,,,,4,B,B,W,B,B,W,B,B,,
+,,,,5,B,B,W,B,B,W,B,B,,
+,,,,6,W,W,B,W,W,B,W,W,,
+,,,,7,W,W,W,B,B,W,W,W,,
+,,,,8,W,W,W,B,B,W,W,W,,
+level,turn,available gate,victory condition,,,,,,,,,,,comment
+31,3,X/H,All white,,,,,,,,,,,
+,,,,,1,2,3,4,5,6,7,8,,
+,,,,1,W,W,W,W,W,W,W,W,,
+,,,,2,W,W,W,W,W,W,W,W,,
+,,,,3,W,W,W,B,B,W,W,W,,
+,,,,4,W,W,W,+,+,W,W,W,,
+,,,,5,W,W,W,-,-,W,W,W,,
+,,,,6,W,W,W,B,B,W,W,W,,
+,,,,7,W,W,W,W,W,W,W,W,,
+,,,,8,W,W,W,W,W,W,W,W,,
+level,turn,available gate,victory condition,,,,,,,,,,,comment
+32,3,X/H,All white,,,,,,,,,,,auto generated (N=3, central, overlap)
 ,,,,,1,2,3,4,5,6,7,8,,
 ,,,,1,W,W,W,W,W,+,W,W,,
 ,,,,2,W,W,W,W,W,+,W,W,,
@@ -364,6 +353,17 @@ level,turn,available gate,victory condition,,,,,,,,,,,comment
 ,,,,6,W,W,W,W,B,-,W,W,,
 ,,,,7,W,W,W,W,B,-,W,W,,
 ,,,,8,W,W,W,W,W,+,W,W,,
+level,turn,available gate,victory condition,,,,,,,,,,,comment
+33,3,H/Y,All black,,,,,,,,,,,
+,,,,,1,2,3,4,5,6,7,8,,
+,,,,1,B,B,B,-,B,B,B,B,,
+,,,,2,B,B,B,-,B,B,B,B,,
+,,,,3,B,B,B,-,B,B,B,B,,
+,,,,4,B,B,B,B,-,B,B,B,,
+,,,,5,W,W,W,W,+,W,W,W,,
+,,,,6,B,B,B,-,B,B,B,B,,
+,,,,7,B,B,B,-,B,B,B,B,,
+,,,,8,B,B,B,-,B,B,B,B,,
 level,turn,available gate,victory condition,,,,,,,,,,,comment
 34,3,H/Y/Z,All white,,,,,,,,,,,auto generated (N=3, central, overlap)
 ,,,,,1,2,3,4,5,6,7,8,,
@@ -651,16 +651,16 @@ level,turn,available gate,victory condition,,,,,,,,,,,comment
 ,,,,7,W,W,W,W,B,+,+,W,,
 ,,,,8,W,W,W,W,B,W,W,W,,
 level,turn,available gate,victory condition,,,,,,,,,,,comment
-60,3,X/H/Y/Z,All black,,,,,,,,,,,auto generated (N=4, central, overlap)
+60,3,X/H/Y,All white,,,,,,,,,,,
 ,,,,,1,2,3,4,5,6,7,8,,
-,,,,1,B,B,B,+,B,B,B,B,,
-,,,,2,B,B,B,+,B,B,B,B,,
-,,,,3,B,B,W,-,B,B,B,B,,
-,,,,4,B,B,W,-,B,B,B,B,,
-,,,,5,B,B,B,+,B,B,B,B,,
-,,,,6,B,B,B,+,B,B,B,B,,
-,,,,7,B,B,B,+,B,B,B,B,,
-,,,,8,B,B,B,+,B,B,B,B,,
+,,,,1,W,W,W,W,W,W,W,W,,
+,,,,2,W,W,W,W,W,W,W,W,,
+,,,,3,W,W,W,W,W,W,W,W,,
+,,,,4,W,W,W,-,-,W,W,W,,
+,,,,5,W,W,W,+,+,W,W,W,,
+,,,,6,W,W,W,W,W,W,W,W,,
+,,,,7,W,W,W,W,W,W,W,W,,
+,,,,8,W,W,W,W,W,W,W,W,,
 level,turn,available gate,victory condition,,,,,,,,,,,comment
 61,3,X/H/Y/Z,All white,,,,,,,,,,,auto generated (N=5, central, overlap)
 ,,,,,1,2,3,4,5,6,7,8,,
@@ -981,16 +981,16 @@ level,turn,available gate,victory condition,,,,,,,,,,,comment
 ,,,,7,W,W,W,B,+,W,W,W,,
 ,,,,8,W,W,W,B,+,W,W,W,,
 level,turn,available gate,victory condition,,,,,,,,,,,comment
-90,4,X/H/Z,All white,,,,,,,,,,,auto generated (N=4, central, overlap)
+90,4,X/Y/Z/H,All white,,,,,,,,,,,
 ,,,,,1,2,3,4,5,6,7,8,,
-,,,,1,W,W,B,W,W,W,W,W,,
-,,,,2,W,W,B,W,W,W,W,W,,
-,,,,3,W,W,B,W,W,W,W,W,,
-,,,,4,W,W,B,W,W,W,W,W,,
-,,,,5,W,W,B,W,W,W,W,W,,
-,,,,6,-,-,-,-,-,+,+,-,,
-,,,,7,W,W,B,W,W,W,W,W,,
-,,,,8,W,W,B,W,W,W,W,W,,
+,,,,1,W,W,W,W,W,W,W,W,,
+,,,,2,W,W,W,W,W,W,W,W,,
+,,,,3,W,W,W,W,W,W,W,W,,
+,,,,4,W,W,B,-,+,B,W,W,,
+,,,,5,W,W,B,+,-,B,W,W,,
+,,,,6,W,W,W,W,W,W,W,W,,
+,,,,7,W,W,W,W,W,W,W,W,,
+,,,,8,W,W,W,W,W,W,W,W,,
 level,turn,available gate,victory condition,,,,,,,,,,,comment
 91,4,X/H/Y,All white,,,,,,,,,,,auto generated (N=4, central, overlap)
 ,,,,,1,2,3,4,5,6,7,8,,
@@ -1313,14 +1313,14 @@ level,turn,available gate,victory condition,,,,,,,,,,,comment
 level,turn,available gate,victory condition,,,,,,,,,,,comment
 120,4,X/H/Y/Z/CNOT/SWAP,All white,,,,,,,,,,,auto generated (N=4, central, overlap)
 ,,,,,1,2,3,4,5,6,7,8,,
-,,,,1,W,W,W,B,W,W,W,W,,
-,,,,2,W,W,W,B,W,W,W,W,,
-,,,,3,W,W,W,B,B,B,W,W,,
-,,,,4,W,W,W,W,W,B,W,W,,
-,,,,5,W,W,B,B,B,W,W,W,,
-,,,,6,W,W,W,B,W,W,W,W,,
-,,,,7,W,W,W,B,W,W,W,W,,
-,,,,8,W,W,W,B,W,W,W,W,,
+,,,,1,W,W,W,W,W,W,W,W,,
+,,,,2,W,W,W,W,W,W,W,W,,
+,,,,3,W,W,W,W,W,W,W,W,,
+,,,,4,W,W,W,W,W,W,W,W,,
+,,,,5,W,W,+,W,W,B,B,W,,
+,,,,6,W,+,W,W,W,W,W,W,,
+,,,,7,W,W,W,W,W,W,W,W,,
+,,,,8,W,W,W,W,W,W,W,W,,
 level,turn,available gate,victory condition,,,,,,,,,,,comment
 121,4,X/H/Y/Z/CNOT/SWAP,All white,,,,,,,,,,,auto generated (N=4, central, overlap)
 ,,,,,1,2,3,4,5,6,7,8,,
@@ -1346,14 +1346,14 @@ level,turn,available gate,victory condition,,,,,,,,,,,comment
 level,turn,available gate,victory condition,,,,,,,,,,,comment
 123,4,X/H/Y/Z/CNOT/SWAP,All white,,,,,,,,,,,auto generated (N=4, central, overlap)
 ,,,,,1,2,3,4,5,6,7,8,,
-,,,,1,W,W,W,W,W,W,W,W,,
-,,,,2,W,W,W,W,W,W,W,W,,
-,,,,3,W,W,W,W,W,W,W,W,,
-,,,,4,W,W,W,W,W,W,W,W,,
-,,,,5,W,W,+,W,W,B,B,W,,
-,,,,6,W,+,W,W,W,W,W,W,,
-,,,,7,W,W,W,W,W,W,W,W,,
-,,,,8,W,W,W,W,W,W,W,W,,
+,,,,1,W,W,W,B,W,W,W,W,,
+,,,,2,W,W,W,B,W,W,W,W,,
+,,,,3,W,W,W,B,B,B,W,W,,
+,,,,4,W,W,W,W,W,B,W,W,,
+,,,,5,W,W,B,B,B,W,W,W,,
+,,,,6,W,W,W,B,W,W,W,W,,
+,,,,7,W,W,W,B,W,W,W,W,,
+,,,,8,W,W,W,B,W,W,W,W,,
 level,turn,available gate,victory condition,,,,,,,,,,,comment
 124,4,X/H/Y/Z/CNOT/SWAP,All white,,,,,,,,,,,auto generated (N=4, central, overlap)
 ,,,,,1,2,3,4,5,6,7,8,,
@@ -1566,14 +1566,14 @@ level,turn,available gate,victory condition,,,,,,,,,,,comment
 level,turn,available gate,victory condition,,,,,,,,,,,comment
 143,4,X/H/Y/Z/CNOT/SWAP,All white,,,,,,,,,,,auto generated (N=4, central, overlap)
 ,,,,,1,2,3,4,5,6,7,8,,
-,,,,1,W,W,W,W,W,W,W,W,,
-,,,,2,W,W,W,W,W,W,W,W,,
-,,,,3,W,W,W,W,W,W,W,W,,
-,,,,4,W,W,W,W,W,-,W,W,,
-,,,,5,W,W,W,W,+,+,W,W,,
-,,,,6,W,W,W,W,W,W,+,W,,
-,,,,7,W,W,W,W,W,W,W,W,,
-,,,,8,W,W,W,W,W,W,W,W,,
+,,,,1,W,W,W,W,W,+,W,W,,
+,,,,2,W,W,W,W,W,+,W,W,,
+,,,,3,+,+,+,+,+,B,+,+,,
+,,,,4,W,W,W,W,W,+,B,W,,
+,,,,5,W,W,W,W,W,+,W,W,,
+,,,,6,W,W,W,W,W,-,W,W,,
+,,,,7,W,W,W,W,W,+,W,W,,
+,,,,8,W,W,W,W,W,+,W,W,,
 level,turn,available gate,victory condition,,,,,,,,,,,comment
 144,4,X/H/Y/Z/CNOT/SWAP,All white,,,,,,,,,,,auto generated (N=4, central, overlap)
 ,,,,,1,2,3,4,5,6,7,8,,
@@ -1643,14 +1643,14 @@ level,turn,available gate,victory condition,,,,,,,,,,,comment
 level,turn,available gate,victory condition,,,,,,,,,,,comment
 150,4,X/H/Y/Z/CNOT/SWAP,All white,,,,,,,,,,,auto generated (N=4, central, overlap)
 ,,,,,1,2,3,4,5,6,7,8,,
-,,,,1,W,W,W,W,W,+,W,W,,
-,,,,2,W,W,W,W,W,+,W,W,,
-,,,,3,+,+,+,+,+,B,+,+,,
-,,,,4,W,W,W,W,W,+,B,W,,
-,,,,5,W,W,W,W,W,+,W,W,,
-,,,,6,W,W,W,W,W,-,W,W,,
-,,,,7,W,W,W,W,W,+,W,W,,
-,,,,8,W,W,W,W,W,+,W,W,,
+,,,,1,W,W,W,W,W,W,W,W,,
+,,,,2,W,W,W,W,W,W,W,W,,
+,,,,3,W,W,W,W,W,W,W,W,,
+,,,,4,W,W,W,W,W,-,W,W,,
+,,,,5,W,W,W,W,+,+,W,W,,
+,,,,6,W,W,W,W,W,W,+,W,,
+,,,,7,W,W,W,W,W,W,W,W,,
+,,,,8,W,W,W,W,W,W,W,W,,
 level,turn,available gate,victory condition,,,,,,,,,,,comment
 151,4,X/H/Y/Z/CNOT/SWAP,All white,,,,,,,,,,,auto generated (N=4, central, overlap)
 ,,,,,1,2,3,4,5,6,7,8,,
@@ -2303,17 +2303,6 @@ level,turn,available gate,victory condition,,,,,,,,,,,comment
 level,turn,available gate,victory condition,,,,,,,,,,,comment
 210,5,X/H/Y/CNOT/SWAP/Z,All white,,,,,,,,,,,auto generated (N=5, central, overlap)
 ,,,,,1,2,3,4,5,6,7,8,,
-,,,,1,W,W,B,W,B,W,W,W,,
-,,,,2,W,W,B,W,B,W,W,W,,
-,,,,3,W,W,B,W,B,W,W,W,,
-,,,,4,W,W,W,B,B,B,W,W,,
-,,,,5,B,B,B,W,W,W,B,B,,
-,,,,6,W,W,B,W,B,W,W,W,,
-,,,,7,W,W,B,W,B,W,W,W,,
-,,,,8,W,W,B,W,B,W,W,W,,
-level,turn,available gate,victory condition,,,,,,,,,,,comment
-211,5,X/H/Y/CNOT/SWAP/Z,All white,,,,,,,,,,,auto generated (N=5, central, overlap)
-,,,,,1,2,3,4,5,6,7,8,,
 ,,,,1,W,W,W,W,B,W,W,W,,
 ,,,,2,W,W,W,W,B,W,W,W,,
 ,,,,3,W,W,B,W,W,W,W,W,,
@@ -2322,6 +2311,17 @@ level,turn,available gate,victory condition,,,,,,,,,,,comment
 ,,,,6,W,W,W,B,B,W,W,W,,
 ,,,,7,W,W,W,W,W,W,W,W,,
 ,,,,8,W,W,W,W,B,W,W,W,,
+level,turn,available gate,victory condition,,,,,,,,,,,comment
+211,5,X/H/Y/CNOT/SWAP/Z,All white,,,,,,,,,,,auto generated (N=5, central, overlap)
+,,,,,1,2,3,4,5,6,7,8,,
+,,,,1,W,W,B,W,B,W,W,W,,
+,,,,2,W,W,B,W,B,W,W,W,,
+,,,,3,W,W,B,W,B,W,W,W,,
+,,,,4,W,W,W,B,B,B,W,W,,
+,,,,5,B,B,B,W,W,W,B,B,,
+,,,,6,W,W,B,W,B,W,W,W,,
+,,,,7,W,W,B,W,B,W,W,W,,
+,,,,8,W,W,B,W,B,W,W,W,,
 level,turn,available gate,victory condition,,,,,,,,,,,comment
 212,5,X/H/Y/CNOT/SWAP/Z,All white,,,,,,,,,,,auto generated (N=5, central, overlap)
 ,,,,,1,2,3,4,5,6,7,8,,
@@ -2952,17 +2952,6 @@ level,turn,available gate,victory condition,,,,,,,,,,,comment
 level,turn,available gate,victory condition,,,,,,,,,,,comment
 269,6,X/H/Y/Z/CNOT/SWAP,All white,,,,,,,,,,,auto generated (N=6, central, overlap)
 ,,,,,1,2,3,4,5,6,7,8,,
-,,,,1,W,W,W,W,W,W,W,W,,
-,,,,2,W,W,W,W,W,W,W,W,,
-,,,,3,W,W,W,W,W,B,W,W,,
-,,,,4,W,W,W,W,B,W,W,W,,
-,,,,5,-,-,-,B,B,-,-,-,,
-,,,,6,W,W,W,+,-,B,W,W,,
-,,,,7,W,W,W,W,W,W,W,W,,
-,,,,8,W,W,W,W,W,W,W,W,,
-level,turn,available gate,victory condition,,,,,,,,,,,comment
-270,6,X/H/Y/Z/CNOT/SWAP,All white,,,,,,,,,,,auto generated (N=6, central, overlap)
-,,,,,1,2,3,4,5,6,7,8,,
 ,,,,1,W,W,W,W,B,W,W,W,,
 ,,,,2,W,W,W,W,B,W,W,W,,
 ,,,,3,W,W,W,W,B,W,W,W,,
@@ -2971,6 +2960,17 @@ level,turn,available gate,victory condition,,,,,,,,,,,comment
 ,,,,6,W,W,-,-,B,W,W,W,,
 ,,,,7,W,W,W,W,B,W,W,W,,
 ,,,,8,W,W,W,W,B,W,W,W,,
+level,turn,available gate,victory condition,,,,,,,,,,,comment
+270,6,X/H/Y/Z/CNOT/SWAP,All white,,,,,,,,,,,auto generated (N=6, central, overlap)
+,,,,,1,2,3,4,5,6,7,8,,
+,,,,1,W,W,W,W,W,W,W,W,,
+,,,,2,W,W,W,W,W,W,W,W,,
+,,,,3,W,W,W,W,W,B,W,W,,
+,,,,4,W,W,W,W,B,W,W,W,,
+,,,,5,-,-,-,B,B,-,-,-,,
+,,,,6,W,W,W,+,-,B,W,W,,
+,,,,7,W,W,W,W,W,W,W,W,,
+,,,,8,W,W,W,W,W,W,W,W,,
 level,turn,available gate,victory condition,,,,,,,,,,,comment
 271,6,X/H/Y/CNOT/SWAP/Z,All white,,,,,,,,,,,auto generated (N=6, central, overlap)
 ,,,,,1,2,3,4,5,6,7,8,,
