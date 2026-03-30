@@ -90,27 +90,30 @@ class _TutorialScreenState extends State<TutorialScreen> {
           },
         ),
       ),
-      body: Column(
-        children: [
-          // 進捗表示
-          _buildProgressIndicator(),
-          
-          // ページコンテンツ
-          Expanded(
-            child: PageView.builder(
-              controller: _pageController,
-              onPageChanged: _onPageChanged,
-              itemCount: _pages.length,
-              itemBuilder: (context, pageIndex) {
-                final page = _pages[pageIndex];
-                return _buildPage(page, pageIndex);
-              },
+      body: SafeArea(
+        top: false,
+        child: Column(
+          children: [
+            // 進捗表示
+            _buildProgressIndicator(),
+            
+            // ページコンテンツ
+            Expanded(
+              child: PageView.builder(
+                controller: _pageController,
+                onPageChanged: _onPageChanged,
+                itemCount: _pages.length,
+                itemBuilder: (context, pageIndex) {
+                  final page = _pages[pageIndex];
+                  return _buildPage(page, pageIndex);
+                },
+              ),
             ),
-          ),
-          
-          // ナビゲーションボタン
-          _buildNavigationButtons(),
-        ],
+            
+            // ナビゲーションボタン
+            _buildNavigationButtons(),
+          ],
+        ),
       ),
     );
   }

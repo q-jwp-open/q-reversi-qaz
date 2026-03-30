@@ -56,6 +56,8 @@ class _ChallengeGameScreenState extends State<ChallengeGameScreen> {
   final GlobalKey _applyGateButtonKey = GlobalKey();
   final GlobalKey _gateInfoButtonKey = GlobalKey();
   OverlayEntry? _guideOverlay;
+  Animation<double>? _routeAnimation;
+  AnimationStatusListener? _routeAnimationListener;
 
   final ChallengeGameService _challengeService = ChallengeGameService();
   final ChallengeLevelLoader _levelLoader = ChallengeLevelLoader();
@@ -69,6 +71,11 @@ class _ChallengeGameScreenState extends State<ChallengeGameScreen> {
 
   @override
   void dispose() {
+    if (_routeAnimationListener != null && _routeAnimation != null) {
+      _routeAnimation!.removeStatusListener(_routeAnimationListener!);
+    }
+    _routeAnimation = null;
+    _routeAnimationListener = null;
     _guideOverlay?.remove();
     _guideOverlay = null;
     super.dispose();
@@ -88,10 +95,32 @@ class _ChallengeGameScreenState extends State<ChallengeGameScreen> {
     if (isShown || !mounted) return;
 
     await prefs.setBool(_challengeGuideShownKey, true);
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      if (!mounted) return;
-      _startGuideOverlay();
-    });
+    _startGuideAfterRouteTransition();
+  }
+
+  void _startGuideAfterRouteTransition() {
+    if (!mounted) return;
+
+    final routeAnimation = ModalRoute.of(context)?.animation;
+    _routeAnimation = routeAnimation;
+    if (routeAnimation == null || routeAnimation.status == AnimationStatus.completed) {
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        if (!mounted) return;
+        _startGuideOverlay();
+      });
+      return;
+    }
+
+    _routeAnimationListener = (status) {
+      if (status != AnimationStatus.completed || !mounted) return;
+      routeAnimation.removeStatusListener(_routeAnimationListener!);
+      _routeAnimationListener = null;
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        if (!mounted) return;
+        _startGuideOverlay();
+      });
+    };
+    routeAnimation.addStatusListener(_routeAnimationListener!);
   }
 
   void _startGuideOverlay() {
